@@ -14,72 +14,61 @@ User can:
 
 from tkinter import *
 
+window = Tk()
 
-window =Tk()
+labelTitle = Label(window, text="Title")
+labelTitle.grid(row=0, column=0)
 
+labelAuthor = Label(window, text="Author")
+labelAuthor.grid(row=0, column=2)
 
-label1 = Label(window,text="Title")
-label1.grid(row=0,column=0)
+labelYear = Label(window, text="Year")
+labelYear.grid(row=1, column=0)
 
+labelISBN = Label(window, text="ISBN")
+labelISBN.grid(row=1, column=2)
 
-label2 = Label(window,text="Author")
-label2.grid(row=0,column=2)
+title_text = StringVar()
+entryOne = Entry(window, textvariable=title_text)
+entryOne.grid(row=0, column=1)
 
-label3 = Label(window,text="Year")
-label3.grid(row=1,column=0)
+author_text = StringVar()
+entryOne = Entry(window, textvariable=author_text)
+entryOne.grid(row=0, column=3)
 
-label4 = Label(window,text="ISBN")
-label4.grid(row=1,column=2)
+year_text = StringVar()
+entryOne = Entry(window, textvariable=year_text)
+entryOne.grid(row=1, column=1)
 
+isbn_text = StringVar()
+entryOne = Entry(window, textvariable=isbn_text)
+entryOne.grid(row=1, column=3)
 
-title_text= StringVar()
-entryOne = Entry(window,textvariable=title_text)
-entryOne.grid(row=0,column=1)
-
-
-author_text= StringVar()
-entryOne = Entry(window,textvariable=author_text)
-entryOne.grid(row=0,column=3)
-
-
-year_text= StringVar()
-entryOne = Entry(window,textvariable=year_text)
-entryOne.grid(row=1,column=1)
-
-
-isbn_text= StringVar()
-entryOne = Entry(window,textvariable=isbn_text)
-entryOne.grid(row=1,column=3)
-
-
-listOne = Listbox(window,height=6,width=35)
-listOne.grid(row=2,column=0,rowspan=6,columnspan=2)
-
+listOne = Listbox(window, height=6, width=35)
+listOne.grid(row=2, column=0, rowspan=6, columnspan=2)
 
 scrollBarOne = Scrollbar(window)
-scrollBarOne.grid(row=2,column=2,rowspan=6)
+scrollBarOne.grid(row=2, column=2, rowspan=6)
 
 listOne.configure(yscrollcommand=scrollBarOne.set)
-scrollBarOne.configure(command = listOne.yview)
+scrollBarOne.configure(command=listOne.yview)
 
+viewAllButton = Button(window, text="View All", width=12)
+viewAllButton.grid(row=2, column=3)
 
+searchEntryButton = Button(window, text="Search Entry", width=12)
+searchEntryButton.grid(row=3, column=3)
 
-viewAllButton = Button(window,text="View All",width=12)
-viewAllButton.grid(row=2,column=3)
+addEntryButton = Button(window, text="Add Entry", width=12)
+addEntryButton.grid(row=4, column=3)
 
-searchEntryButton = Button(window,text="Search Entry",width=12)
-searchEntryButton.grid(row=3,column=3)
+updateSelectedButton = Button(window, text="Update Selected", width=12)
+updateSelectedButton.grid(row=5, column=3)
 
-addEntryButton = Button(window,text="Add Entry",width=12)
-addEntryButton.grid(row=4,column=3)
+deleteSelectedButton = Button(window, text="Delete Selected", width=12)
+deleteSelectedButton.grid(row=6, column=3)
 
-updateSelectedButton = Button(window,text="Update Selected",width=12)
-updateSelectedButton.grid(row=5,column=3)
-
-deleteSelectedButton = Button(window,text="Delete Selected",width=12)
-deleteSelectedButton.grid(row=6,column=3)
-
-closeButton = Button(window,text="Close",width=12)
-closeButton.grid(row=7,column=3)
+closeButton = Button(window, text="Close", width=12)
+closeButton.grid(row=7, column=3)
 
 window.mainloop()
