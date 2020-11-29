@@ -22,27 +22,54 @@ def view_command():
     for row in BackEnd.view():
         listOne.insert(END, row)
 
+
 def insert_command():
-    BackEnd.insert(title_text.get(),author_text.get(),year_text.get(),isbn_text.get())
+    BackEnd.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
 
 
 def search_command():
     listOne.delete('0', END)
-    values = BackEnd.search(title_text.get(),author_text.get(),year_text.get(),isbn_text.get())
+    values = BackEnd.search(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
     for value in values:
         listOne.insert(END, value)
 
 
 def get_selected_row(event):
-    index = listOne.curselection()[0]
-    selectedTuple = listOne.get(index)
-    return selectedTuple
+    global selectedTuple
+    try:
+
+        index = listOne.curselection()[0]
+        selectedTuple = listOne.get(index)
+
+        titleEntry.delete(0, END)
+        authorEntry.delete(0, END)
+        yearEntry.delete(0, END)
+        isbnEntry.delete(0, END)
+
+        titleEntry.insert(END, selectedTuple[1])
+        authorEntry.insert(END, selectedTuple[2])
+        yearEntry.insert(END, selectedTuple[3])
+        isbnEntry.insert(END, selectedTuple[4])
+    except IndexError:
+        pass
 
 
 def delete_command():
-    BackEnd.delete(get_selected_row()[0])
+    BackEnd.delete(selectedTuple[0])
+
+
+def update_command():
+    print("update")
+    BackEnd.update(selectedTuple[0],
+                   title_text.get(),
+                   author_text.get(),
+                   year_text.get(),
+                   isbn_text.get())
+
 
 window = Tk()
+
+window.wm_title("BookStore")
 
 labelTitle = Label(window, text="Title")
 labelTitle.grid(row=0, column=0)
@@ -57,25 +84,25 @@ labelISBN = Label(window, text="ISBN")
 labelISBN.grid(row=1, column=2)
 
 title_text = StringVar()
-entryOne = Entry(window, textvariable=title_text)
-entryOne.grid(row=0, column=1)
+titleEntry = Entry(window, textvariable=title_text)
+titleEntry.grid(row=0, column=1)
 
 author_text = StringVar()
-entryOne = Entry(window, textvariable=author_text)
-entryOne.grid(row=0, column=3)
+authorEntry = Entry(window, textvariable=author_text)
+authorEntry.grid(row=0, column=3)
 
 year_text = StringVar()
-entryOne = Entry(window, textvariable=year_text)
-entryOne.grid(row=1, column=1)
+yearEntry = Entry(window, textvariable=year_text)
+yearEntry.grid(row=1, column=1)
 
 isbn_text = StringVar()
-entryOne = Entry(window, textvariable=isbn_text)
-entryOne.grid(row=1, column=3)
+isbnEntry = Entry(window, textvariable=isbn_text)
+isbnEntry.grid(row=1, column=3)
 
 listOne = Listbox(window, height=6, width=35)
 listOne.grid(row=2, column=0, rowspan=6, columnspan=2)
 
-listOne.bind('<<ListboxSelect>>',get_selected_row)
+listOne.bind('<<ListboxSelect>>', get_selected_row)
 
 scrollBarOne = Scrollbar(window)
 scrollBarOne.grid(row=2, column=2, rowspan=6)
@@ -86,19 +113,19 @@ scrollBarOne.configure(command=listOne.yview)
 viewAllButton = Button(window, text="View All", width=12, command=view_command)
 viewAllButton.grid(row=2, column=3)
 
-searchEntryButton = Button(window, text="Search Entry", width=12,command = search_command)
+searchEntryButton = Button(window, text="Search Entry", width=12, command=search_command)
 searchEntryButton.grid(row=3, column=3)
 
-addEntryButton = Button(window, text="Add Entry", width=12,command=insert_command)
+addEntryButton = Button(window, text="Add Entry", width=12, command=insert_command)
 addEntryButton.grid(row=4, column=3)
 
-updateSelectedButton = Button(window, text="Update Selected", width=12)
+updateSelectedButton = Button(window, text="Update Selected", width=12, command=update_command)
 updateSelectedButton.grid(row=5, column=3)
 
-deleteSelectedButton = Button(window, text="Delete Selected", width=12 , command = delete_command)
+deleteSelectedButton = Button(window, text="Delete Selected", width=12, command=delete_command)
 deleteSelectedButton.grid(row=6, column=3)
 
-closeButton = Button(window, text="Close", width=12)
+closeButton = Button(window, text="Close", width=12, command=window.destroy)
 closeButton.grid(row=7, column=3)
 
 window.mainloop()
