@@ -14,7 +14,7 @@ User can:
 
 from tkinter import *
 
-from BackEnd import DatabaseOperations
+from Bookstore.BackEnd import DatabaseOperations
 
 databaseOp = DatabaseOperations("books.db")
 
