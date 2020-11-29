@@ -14,22 +14,24 @@ User can:
 
 from tkinter import *
 
-import BackEnd
+from BackEnd import DatabaseOperations
+
+databaseOp = DatabaseOperations("books.db")
 
 
 def view_command():
     listOne.delete('0', END)
-    for row in BackEnd.view():
+    for row in databaseOp.view():
         listOne.insert(END, row)
 
 
 def insert_command():
-    BackEnd.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    databaseOp.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
 
 
 def search_command():
     listOne.delete('0', END)
-    values = BackEnd.search(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    values = databaseOp.search(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
     for value in values:
         listOne.insert(END, value)
 
@@ -55,16 +57,16 @@ def get_selected_row(event):
 
 
 def delete_command():
-    BackEnd.delete(selectedTuple[0])
+    databaseOp.delete(selectedTuple[0])
 
 
 def update_command():
     print("update")
-    BackEnd.update(selectedTuple[0],
-                   title_text.get(),
-                   author_text.get(),
-                   year_text.get(),
-                   isbn_text.get())
+    databaseOp.update(selectedTuple[0],
+                      title_text.get(),
+                      author_text.get(),
+                      year_text.get(),
+                      isbn_text.get())
 
 
 window = Tk()

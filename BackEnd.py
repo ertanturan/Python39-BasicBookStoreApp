@@ -1,67 +1,45 @@
 import sqlite3
 
 
-def connect():
-    connection = sqlite3.connect("books.db")
-    cursor = connection.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS book "
-                   "(id INTEGER PRIMARY KEY, "
-                   "title TEXT, author TEXT,year INTEGER, isbn INTEGER) ")
-    connection.commit()
-    connection.close()
+class DatabaseOperations:
 
+    def __init__(self, db):
+        self.dataBase = db
+        self.connection = sqlite3.connect(db)
+        self.cursor = self.connection.cursor()
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS book "
+                            "(id INTEGER PRIMARY KEY, "
+                            "title TEXT, author TEXT,year INTEGER, isbn INTEGER) ")
+        self.connection.commit()
 
-def insert(title, author, year, isbn):
-    connection = sqlite3.connect("books.db")
-    cursor = connection.cursor()
+    def insert(self, title, author, year, isbn):
+        self.cursor.execute("INSERT INTO book  VALUES(NULL,?,?,?,?)", (title, author, year, isbn))
 
-    cursor.execute("INSERT INTO book  VALUES(NULL,?,?,?,?)", (title, author, year, isbn))
+        self.connection.commit()
 
-    connection.commit()
-    connection.close()
+    def view(self):
+        self.cursor.execute("SELECT * FROM book ")
+        values = self.cursor.fetchall()
 
+        return values
 
-def view():
-    connection = sqlite3.connect("books.db")
-    cursor = connection.cursor()
+    def search(self, title="", author="", year="", isbn=""):
+        self.cursor.execute("SELECT * FROM book  WHERE title=? OR author=? OR year=? OR isbn=?",
+                            (title, author, year, isbn))
+        values = self.cursor.fetchall()
+        return values
 
-    cursor.execute("SELECT * FROM book ")
-    values = cursor.fetchall()
-    connection.close()
-    return values
+    def delete(self, id):
+        self.cursor.execute("DELETE FROM book WHERE id=?", (id,))
 
+        self.connection.commit()
 
-def search(title="", author="", year="", isbn=""):
-    connection = sqlite3.connect("books.db")
-    cursor = connection.cursor()
+    def update(self, id, title, author, year, isbn):
+        self.cursor.execute("UPDATE book SET title=? , author=? ,year=?,isbn=? WHERE id=?", (
+            title, author, year, isbn, id))
 
-    cursor.execute("SELECT * FROM book  WHERE title=? OR author=? OR year=? OR isbn=?",
-                   (title, author, year, isbn))
-    values = cursor.fetchall()
-    connection.close()
-    return values
+        self.connection.commit()
 
+    def __del__(self):
+        self.connection.close()
 
-def delete(id):
-    connection = sqlite3.connect("books.db")
-    cursor = connection.cursor()
-
-    cursor.execute("DELETE FROM book WHERE id=?", (id,))
-
-    connection.commit()
-    connection.close()
-
-
-def update(id, title, author, year, isbn):
-    connection = sqlite3.connect("books.db")
-    cursor = connection.cursor()
-
-    cursor.execute("UPDATE book SET title=? , author=? ,year=?,isbn=? WHERE id=?", (
-        title, author, year, isbn, id))
-
-    connection.commit()
-    connection.close()
-
-
-update(2, "The Moon", "John Smooth", 2002, 684684684)
-connect()
