@@ -63,6 +63,5 @@ def update(id, title, author, year, isbn):
     connection.close()
 
 
-
-update(2,"The Moon","John Smooth",2002,684684684)
+update(2, "The Moon", "John Smooth", 2002, 684684684)
 connect()
