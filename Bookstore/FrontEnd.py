@@ -16,7 +16,7 @@ from tkinter import *
 
 from Bookstore.BackEnd import DatabaseOperations
 
-databaseOp = DatabaseOperations("books.db")
+databaseOp = DatabaseOperations("Bookstore\\books.db")
 
 
 def view_command():
